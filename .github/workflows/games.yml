@@ -21,7 +21,7 @@ jobs:
           - dayz
           - samp
           - source
-          - ark_source
+          - ark
           
     steps:
       - uses: actions/checkout@v2
