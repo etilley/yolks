@@ -21,6 +21,7 @@ jobs:
           - dayz
           - samp
           - source
+          - ark_source
           
     steps:
       - uses: actions/checkout@v2
@@ -32,7 +33,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.REGISTRY_TOKEN }}
+          password: ${{ github.token }}
       - uses: docker/build-push-action@v2
         with:
           context: ./games/${{ matrix.game }}
@@ -40,4 +41,4 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-             ghcr.io/parkervcp/games:${{ matrix.game }}
+             ghcr.io/${{ github.repository_owner }}/games:${{ matrix.game }}
