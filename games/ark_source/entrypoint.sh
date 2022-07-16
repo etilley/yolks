@@ -68,11 +68,19 @@ rmv() {
 }; 
 
 trap rmv 15; 
-
+echo test
 # Replace Startup Variables
 MODIFIED_STARTUP=$(echo ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')
 echo -e ":/home/container$ ${MODIFIED_STARTUP}"
 
 # Run the Server
-eval ${MODIFIED_STARTUP} 
+eval ${MODIFIED_STARTUP} &
 
+
+until 
+	echo "waiting for rcon connection..."; 
+	rcon -t rcon -a 127.0.0.1:${RCON_PORT} -p ${ARK_ADMIN_PASSWORD}; 
+do 
+	sleep 10; 
+done
+echo "Done with script"
