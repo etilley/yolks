@@ -61,13 +61,6 @@ else
     echo -e "Not updating game server as auto update was set to 0. Starting Server"
 fi
 
-
-rmv() { 
-	echo -e "stopping server"; 
-	rcon -t rcon -a 127.0.0.1:${RCON_PORT} -p ${ARK_ADMIN_PASSWORD} -c saveworld && rcon -a 127.0.0.1:${RCON_PORT} -p ${ARK_ADMIN_PASSWORD} -c DoExit; 
-}; 
-
-trap rmv 15; 
 echo test
 # Replace Startup Variables
 MODIFIED_STARTUP=$(echo ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')
@@ -76,11 +69,13 @@ echo -e ":/home/container$ ${MODIFIED_STARTUP}"
 # Run the Server
 eval ${MODIFIED_STARTUP} &
 
-
+echo "start script"
 until 
 	echo "waiting for rcon connection..."; 
 	rcon -t rcon -a 127.0.0.1:${RCON_PORT} -p ${ARK_ADMIN_PASSWORD}; 
 do 
 	sleep 10; 
 done
-echo "Done with script"
+
+echo -e "stopping server"; 
+rcon -t rcon -a 127.0.0.1:${RCON_PORT} -p ${ARK_ADMIN_PASSWORD} -c saveworld && rcon -a 127.0.0.1:${RCON_PORT} -p ${ARK_ADMIN_PASSWORD} -c DoExit; 
